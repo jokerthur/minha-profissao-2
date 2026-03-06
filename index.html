@@ -55,6 +55,31 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         }
+
+        /* Estilo para a aba de mensagens estilo Facebook */
+        .message-enter {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-bubble {
+            transition: all 0.2s ease;
+        }
+
+        .message-bubble:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body class="bg-marble-50 text-slate-800 antialiased selection:bg-gold-500 selection:text-white">
@@ -74,6 +99,12 @@
                     <a href="#sobre" class="text-sm font-semibold text-slate-600 hover:text-gold-500 transition-colors">A Profissão</a>
                     <a href="#salario" class="text-sm font-semibold text-slate-600 hover:text-gold-500 transition-colors">Média Salarial</a>
                     <a href="#formacao" class="text-sm font-semibold text-slate-600 hover:text-gold-500 transition-colors">ENEM & Formação</a>
+                    <!-- NOVO LINK: Mensagens -->
+                    <a href="#mensagens" class="text-sm font-semibold text-slate-600 hover:text-gold-500 transition-colors flex items-center gap-1">
+                        <i class="fa-regular fa-message"></i>
+                        <span>Mensagens</span>
+                        <span class="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" id="message-count-badge">0</span>
+                    </a>
                     <button onclick="toggleModal('orcamento-modal')" class="bg-marble-900 hover:bg-gold-500 text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
                         Falar com Especialista
                     </button>
@@ -94,6 +125,12 @@
                 <a href="#sobre" class="block px-3 py-3 text-base font-medium text-slate-700 hover:text-gold-500 hover:bg-slate-50 rounded-md">A Profissão</a>
                 <a href="#salario" class="block px-3 py-3 text-base font-medium text-slate-700 hover:text-gold-500 hover:bg-slate-50 rounded-md">Média Salarial</a>
                 <a href="#formacao" class="block px-3 py-3 text-base font-medium text-slate-700 hover:text-gold-500 hover:bg-slate-50 rounded-md">ENEM & Formação</a>
+                <!-- NOVO LINK MOBILE: Mensagens -->
+                <a href="#mensagens" class="block px-3 py-3 text-base font-medium text-slate-700 hover:text-gold-500 hover:bg-slate-50 rounded-md flex items-center gap-2">
+                    <i class="fa-regular fa-message"></i>
+                    Mensagens
+                    <span class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5" id="mobile-message-count">0</span>
+                </a>
                 <button onclick="toggleModal('orcamento-modal')" class="w-full mt-4 bg-marble-900 text-white px-3 py-3 rounded-md text-base font-bold hover:bg-gold-500 transition-colors">
                     Falar com Especialista
                 </button>
@@ -346,6 +383,49 @@
         </div>
     </section>
 
+    <!-- ===== NOVA SEÇÃO: MENSAGENS RECEBIDAS (ESTILO FACEBOOK) ===== -->
+    <section id="mensagens" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-gold-500 font-bold tracking-wider uppercase text-sm mb-2">CAIXA DE ENTRADA</h2>
+                <h3 class="text-3xl font-serif font-bold text-marble-900">Mensagens Recebidas</h3>
+                <p class="text-slate-600 mt-2">Últimas mensagens enviadas pelos visitantes</p>
+            </div>
+
+            <!-- Abas estilo Facebook -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- Cabeçalho das abas -->
+                <div class="border-b border-gray-200">
+                    <div class="flex space-x-8 px-6" role="tablist">
+                        <button onclick="showTab('todas')" id="tab-todas" class="py-4 px-2 border-b-2 border-gold-500 text-gold-600 font-medium text-sm transition-colors" role="tab">
+                            Todas as mensagens
+                        </button>
+                        <button onclick="showTab('nao-lidas')" id="tab-nao-lidas" class="py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm transition-colors" role="tab">
+                            Não lidas <span id="unread-count" class="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5">0</span>
+                        </button>
+                        <button onclick="showTab('respondidas')" id="tab-respondidas" class="py-4 px-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm transition-colors" role="tab">
+                            Respondidas
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lista de mensagens -->
+                <div class="divide-y divide-gray-100 max-h-[600px] overflow-y-auto" id="messages-container">
+                    <!-- Mensagens serão inseridas aqui via JavaScript -->
+                </div>
+
+                <!-- Estado vazio -->
+                <div id="empty-state" class="text-center py-16 px-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-gray-100 rounded-full mb-4">
+                        <i class="fa-regular fa-message text-3xl text-gray-400"></i>
+                    </div>
+                    <h4 class="text-lg font-medium text-gray-900 mb-1">Nenhuma mensagem ainda</h4>
+                    <p class="text-gray-500">As mensagens enviadas pelos visitantes aparecerão aqui.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="bg-marble-900 border-t border-slate-800 pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -371,6 +451,7 @@
                         <li><a href="#sobre" class="text-slate-400 hover:text-gold-500 transition-colors">A Profissão</a></li>
                         <li><a href="#salario" class="text-slate-400 hover:text-gold-500 transition-colors">Tabela Salarial</a></li>
                         <li><a href="#formacao" class="text-slate-400 hover:text-gold-500 transition-colors">Cursos Relacionados</a></li>
+                        <li><a href="#mensagens" class="text-slate-400 hover:text-gold-500 transition-colors">Mensagens</a></li>
                         <li><a href="#" onclick="toggleModal('orcamento-modal'); return false;" class="text-slate-400 hover:text-gold-500 transition-colors">Fale Conosco</a></li>
                     </ul>
                 </div>
@@ -396,8 +477,7 @@
         </div>
     </footer>
 
-    <!-- ===== NOVA BARRA DE MENSAGENS ===== -->
-    <!-- Barra fixa na parte inferior para envio rápido de mensagens -->
+    <!-- ===== BARRA DE MENSAGENS FIXA (ATRELADA AO BOTÃO DO MENU MOBILE) ===== -->
     <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl z-40 py-3 px-4 md:py-4 transition-transform duration-300 hover:shadow-gold-500/20" id="messageBar">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -405,63 +485,4 @@
                 <div class="flex items-center gap-2 text-sm md:text-base">
                     <span class="bg-gold-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">!</span>
                     <span class="text-slate-700 font-medium">Tire dúvidas agora mesmo:</span>
-                    <span class="text-gold-600 font-bold hidden sm:inline">respondemos em até 5 min</span>
-                </div>
-                
-                <!-- Formulário compacto -->
-                <form onsubmit="event.preventDefault(); alert('Mensagem enviada via barra rápida! (Função demonstrativa)'); this.reset();" class="flex flex-col xs:flex-row w-full sm:w-auto gap-2">
-                    <div class="flex flex-1 min-w-0 gap-2">
-                        <input type="text" placeholder="Seu nome" required 
-                               class="w-full sm:w-36 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent">
-                        <input type="email" placeholder="E-mail" required 
-                               class="w-full sm:w-44 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent">
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="text" placeholder="Mensagem rápida" required 
-                               class="flex-1 sm:w-52 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent">
-                        <button type="submit" 
-                                class="bg-gold-500 hover:bg-gold-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-md hover:shadow-lg whitespace-nowrap">
-                            <i class="fa-regular fa-paper-plane mr-1"></i> Enviar
-                        </button>
-                    </div>
-                </form>
-                
-                <!-- Botão para fechar a barra (opcional) -->
-                <button onclick="document.getElementById('messageBar').remove()" class="absolute right-2 top-2 sm:static text-slate-400 hover:text-slate-600 transition-colors" title="Fechar barra">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL 1: Solicitar Orçamento / Contato -->
-    <div id="orcamento-modal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm transition-opacity opacity-0 modal-overlay" aria-hidden="true" onclick="toggleModal('orcamento-modal')"></div>
-
-        <div class="fixed inset-0 z-10 overflow-y-auto">
-            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <!-- Modal panel -->
-                <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95 modal-content">
-                    
-                    <!-- Botão fechar -->
-                    <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
-                        <button type="button" onclick="toggleModal('orcamento-modal')" class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none">
-                            <span class="sr-only">Fechar</span>
-                            <i class="fa-solid fa-xmark text-xl"></i>
-                        </button>
-                    </div>
-
-                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                        <div class="sm:flex sm:items-start">
-                            <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gold-50 sm:mx-0 sm:h-10 sm:w-10">
-                                <i class="fa-regular fa-envelope text-gold-600"></i>
-                            </div>
-                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
-                                <h3 class="text-xl font-serif font-semibold leading-6 text-gray-900" id="modal-title">Falar com Especialista</h3>
-                                <div class="mt-2">
-                                    <p class="text-sm text-gray-500 mb-4">Preencha seus dados. Entraremos em contato com um orçamento ou para tirar suas dúvidas sobre a profissão.</p>
-                                    
-                                    <form class="space-y-4" onsubmit="event.preventDefault(); alert('Mensagem enviada com sucesso! (Função demonstrativa)'); toggleModal('orcamento-modal');">
-                                        <div>
-                                            <label for="nome" class="block text-sm font-medium text-gray-700">Seu Nome</label
+                    <span class="text-gold-600 font-bold hidden sm:inline">respond
